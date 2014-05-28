@@ -1,15 +1,15 @@
 (function(){
 	Parse.initialize("E7os0XAH8rmf2wTK8KkMyKKPOIs1fxXSw9yuHtxM","woRlpmiQvgskmwNVoQHzC16fpqa77Hl3Ly9rrqcf");
-	var e={};
+	var temp={};
 	["loginView","evaluationView","updateSuccessView"].forEach(function(t){
-		templateCode=document.getElementById(t).text;e[t]=doT.template(templateCode)
+		templateCode=document.getElementById(t).text;temp[t]=doT.template(templateCode)
 	});
 	var t={
-		loginRequiredView:function(e){
+		loginRequiredView:function(temp){
 			return function(){
 				var t=Parse.User.current();
 				if(t){
-					e()
+					temp()
 				}else{
 					window.location.hash="login/"+window.location.hash
 				}
@@ -18,8 +18,8 @@
 	};
 	var n={
 		navbar:function(){
-			var e=Parse.User.current();
-			if(e){
+			var curr=Parse.User.current();
+			if(curr){
 				document.getElementById("loginButton").style.display="none";
 				document.getElementById("logoutButton").style.display="block";
 	document.getElementById("evaluationButton").style.display="block"
@@ -48,15 +48,15 @@
 				{success:function(i){
 					window.EVAL=i;
 					if(i===undefined){
-						var s=TAHelp.getMemberlistOf(n.get("username")).filter(function(e){
-							return e.StudentId!==n.get("username")?true:false
-						}).map(function(e){
-							e.scores=["0","0","0","0"];
-							return e})
+						var s=TAHelp.getMemberlistOf(n.get("username")).filter(function(temp){
+							return temp.StudentId!==n.get("username")?true:false
+						}).map(function(temp){
+							temp.scores=["0","0","0","0"];
+							return temp})
 					}else{
 						var s=i.toJSON().evaluations
 					}
-					document.getElementById("content").innerHTML=e.evaluationView(s);
+					document.getElementById("content").innerHTML=temp.evaluationView(s);
 					document.getElementById("evaluationForm-submit").value=i===undefined?"送出表單":"修改表單";
 					document.getElementById("evaluationForm").addEventListener("submit",function(){
 						for(var o=0;o<s.length;o++){
@@ -75,20 +75,20 @@
 						i.set("evaluations",s);
 						i.save(null,
 							{success:function(){
-								document.getElementById("content").innerHTML=e.updateSuccessView()
+								document.getElementById("content").innerHTML=temp.updateSuccessView()
 							},error:function(){}})},false)
 				},
-				error:function(e,t){}})
+				error:function(temp,t){}})
 		}),
 		loginView:function(t){
-			var r=function(e){
-				var t=document.getElementById(e).value;
+			var r=function(temp){
+				var t=document.getElementById(temp).value;
 				return TAHelp.getMemberlistOf(t)===false?false:true};
-				var i=function(e,t,n){if(!t()){
-					document.getElementById(e).innerHTML=n;
-					document.getElementById(e).style.display="block"
+				var i=function(temp,t,n){if(!t()){
+					document.getElementById(temp).innerHTML=n;
+					document.getElementById(temp).style.display="block"
 				}else{
-					document.getElementById(e).style.display="none"
+					document.getElementById(temp).style.display="none"
 				}
 		};
 	var s=function(){
@@ -101,40 +101,40 @@
 		var n=e.value===t.value?true:false;
 		i("form-signup-message",function(){
 			return n
-		},"Passwords don't match.");
+		},"密碼錯誤");
 		return n
 	};
-	document.getElementById("content").innerHTML=e.loginView();
+	document.getElementById("content").innerHTML=temp.loginView();
 	document.getElementById("form-signin-student-id").addEventListener("keyup",function(){
 		i("form-signin-message",function(){
 			return r("form-signin-student-id")
-		},"The student is not one of the class students.")
+		},"非本課程學生")
 	});
 	document.getElementById("form-signin").addEventListener("submit",function(){
 		if(!r("form-signin-student-id")){
-			alert("The student is not one of the class students.");
+			alert("非本課程學生");
 			return false
 		}
 		Parse.User.logIn(document.getElementById("form-signin-student-id").value,document.getElementById("form-signin-password").value,
-			{success:function(e){
+			{success:function(temp){
 				s()
-			},error:function(e,t){
+			},error:function(temp,t){
 				i("form-signin-message",function(){
 					return false
-				},"Invaild username or password.")
+				},"錯誤的帳號或密碼")
 			}})},false);
 	document.getElementById("form-signup-student-id").addEventListener("keyup",function(){
 		i("form-signup-message",function(){
 			return r("form-signup-student-id")
-		},"The student is not one of the class students.")});
+		},"非本課程學生")});
 	document.getElementById("form-signup-password1").addEventListener("keyup",o);
 	document.getElementById("form-signup").addEventListener("submit",function(){
 		if(!r("form-signup-student-id")){
-			alert("The student is not one of the class students.");
+			alert("非本課程學生");
 			return false
 		}
-		var e=o();
-		if(!e){
+		var use=o();
+		if(!use){
 			return false
 		}
 		var t=new Parse.User;
@@ -142,9 +142,9 @@
 		t.set("password",document.getElementById("form-signup-password").value);
 		t.set("email",document.getElementById("form-signup-email").value);
 		t.signUp(null,
-			{success:function(e){
+			{success:function(use){
 				s()
-			},error:function(e,t){
+			},error:function(use,t){
 				i("form-signup-message",function(){
 					return false
 				},t.message)}})},false)}};
