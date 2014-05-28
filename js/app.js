@@ -4,11 +4,11 @@
 	["loginView","evaluationView","updateSuccessView"].forEach(function(t){
 		templateCode=document.getElementById(t).text;temp[t]=doT.template(templateCode)
 	});
-	var t={
+	var using={
 		loginRequiredView:function(temp){
 			return function(){
-				var t=Parse.User.current();
-				if(t){
+				var curr=Parse.User.current();
+				if(curr){
 					temp()
 				}else{
 					window.location.hash="login/"+window.location.hash
@@ -34,7 +34,7 @@
 				window.location.hash="login/"
 			})
 		},
-		evaluationView:t.loginRequiredView(function(){
+		evaluationView:using.loginRequiredView(function(){
 			var t=Parse.Object.extend("Evaluation");
 			var n=Parse.User.current();
 			var r=new Parse.ACL;
@@ -80,7 +80,7 @@
 				},
 				error:function(temp,t){}})
 		}),
-		loginView:function(t){
+		loginView:function(using){
 			var r=function(temp){
 				var t=document.getElementById(temp).value;
 				return TAHelp.getMemberlistOf(t)===false?false:true};
@@ -118,7 +118,7 @@
 		Parse.User.logIn(document.getElementById("form-signin-student-id").value,document.getElementById("form-signin-password").value,
 			{success:function(temp){
 				s()
-			},error:function(temp,t){
+			},error:function(temp,using){
 				i("form-signin-message",function(){
 					return false
 				},"錯誤的帳號或密碼")
