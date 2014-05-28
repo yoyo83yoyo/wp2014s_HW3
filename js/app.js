@@ -4,7 +4,7 @@
 	["loginView","evaluationView","updateSuccessView"].forEach(function(t){
 		templateCode=document.getElementById(t).text;temp[t]=doT.template(templateCode)
 	});
-	var using={
+	var using={//t=using
 		loginRequiredView:function(temp){
 			return function(){
 				var curr=Parse.User.current();
@@ -16,7 +16,7 @@
 			}
 		}
 	};
-	var n={
+	var handler={//n=handler
 		navbar:function(){
 			var curr=Parse.User.current();
 			if(curr){
@@ -93,7 +93,7 @@
 		};
 	var s=function(){
 		n.navbar();
-		window.location.hash=t?t:""
+		window.location.hash=using?using:""
 	};
 	var o=function(){
 		var e=document.getElementById("form-signup-password");
@@ -154,13 +154,13 @@
 			"peer-evaluation/":"evaluationView",
 			"login/*redirect":"loginView"
 		},
-		indexView:n.evaluationView,
-		evaluationView:n.evaluationView,
-		loginView:n.loginView
+		indexView:handler.evaluationView,
+		evaluationView:handler.evaluationView,
+		loginView:handler.loginView
 	});
 	
 	this.Router=new r;
 	Parse.history.start();
-	n.navbar()
+	handler.navbar()
 })()
 
