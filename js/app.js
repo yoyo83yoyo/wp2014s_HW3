@@ -167,7 +167,7 @@
 	n.navbar()
 })()
 // var router = {
-//    ‘’: handler.登入view函數,
+////    ‘’: handler.登入view函數,
 //    ‘peer-evaluation’: handler.評分view函數. 
 //  };
 //
